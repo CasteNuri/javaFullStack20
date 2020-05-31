@@ -1,0 +1,12 @@
+
+<form class="pt-4" role="form"  (ngSubmit)="login($event,$event)">
+  <legend>Bienvenido/a a mi página de eventos!</legend>
+  <div class="form-group">
+  <label for="email">Email:</label>
+  <input type="email" class="form-control" name="email" placeholder="Email">
+  <label for="password">Password:</label>
+  <input type="password" class="form-control" name="password" placeholder="Password">
+  </div>
+  <p class="text-danger">Mensaje de error</p>
+  <button type="submit" class="btn btn-primary">Login</button>
+ </form>

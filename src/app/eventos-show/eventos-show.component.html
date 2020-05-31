@@ -1,0 +1,30 @@
+
+
+<!--<evento-add [newEvento]="newEvento" (eventoAdded)="changeEventos($event)">
+
+</evento-add>-->
+
+<nav class="navbar navbar-light bg-light justify-content-between mt-3">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#" (click)="orderDate($event)">Orden por fecha</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" (click)="orderPrice($event)">Orden por precio</a>
+    </li>
+  </ul>
+  <form class="form-inline">
+    <input class="form-control mr-sm-2" type="text" [(ngModel)]="search" name="search" placeholder="Search"
+      aria-label="Search">
+  </form>
+</nav>
+<div class="card-columns" *ngIf="eventos && eventos.length; else noEventos" >
+  <!-- Aquí listaremos los eventos -->
+    <evento-item class="card mt4" *ngFor="let evento of eventos | eventFilter: search" [evento]="evento" (eventoDeleted)="deleted(evento)">
+      <!-- Repetir esto por cada evento -->
+    </evento-item>
+
+</div>
+<ng-template #noEventos>
+  <h3>No hay eventos disponibles</h3>
+</ng-template>
