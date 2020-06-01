@@ -9,7 +9,7 @@
       <a class="nav-link" [routerLink]="['/eventos/add']" [routerLinkActive]="['active']">Añadir evento</a>
     </li>
   </ul>
-  <ul class="navbar-nav">
+  <ul class="navbar-nav" *ngIf="logueado">
     <li class="nav-item">
       <a class="nav-link logout-link" (click)="logout()">Salir</a>
     </li>

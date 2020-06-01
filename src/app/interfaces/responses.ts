@@ -17,5 +17,6 @@ export interface EventoResponse {
 
 
 export interface LoginResponse {
+  expires: number;
   accessToken: string;
 }

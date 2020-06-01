@@ -20,6 +20,7 @@ import { LogoutActivateGuard } from './guards/logout-activate.guard';
 
 
 const APP_ROUTES: Route[] = [
+  {path: 'login', component: LoginPageComponent, canActivate: [LogoutActivateGuard]},
   {path: 'eventos', component: EventosShowComponent, canActivate: [LoginActivateGuard]},
   {path: 'eventos/add', component: EventoAddComponent, canDeactivate: [SaveChangesGuard], canActivate: [LoginActivateGuard]},
   {path: 'eventos/:id',
@@ -29,7 +30,6 @@ const APP_ROUTES: Route[] = [
     },
     canActivate: [LoginActivateGuard]
   },
-  {path: 'login', component: LoginPageComponent, canActivate: [LogoutActivateGuard]},
   {path: '',  redirectTo: '/eventos', pathMatch: 'full'},
   {path: '**',  redirectTo: '/eventos', pathMatch: 'full'}
 ];

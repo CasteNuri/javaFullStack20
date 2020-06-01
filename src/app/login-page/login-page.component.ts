@@ -9,16 +9,19 @@ import { Router } from '@angular/router';
 })
 
 export class LoginPageComponent implements OnInit {
+  email = '';
+  password = '';
+  error = '';
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  login(email, password) {
-    this.authService.login(email, password).subscribe(
+  login() {
+    this.authService.login(this.email, this.password).subscribe(
       () => this.router.navigate(['/eventos']),
-      error => console.error(error)
+      error => this.error = 'Usuario y/o contraseña no válidas'
     );
   }
 }

@@ -15,10 +15,12 @@ export class LogoutActivateGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.isLogged().pipe(
-      map(
-        resp => !resp,
-        this.router.createUrlTree(['/eventos'])
-      )
+      map(ok => {
+        if (ok) {
+          return this.router.createUrlTree(['/eventos']);
+        }
+        return true;
+      })
     );
   }
 }

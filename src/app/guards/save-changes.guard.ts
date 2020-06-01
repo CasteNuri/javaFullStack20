@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
 import { EventoAddComponent } from '../evento-add/evento-add.component';
 
 
-export interface ComponentDeactivate {
-  canDeactivate: () => boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree>;
-}
+/*export interface ComponentDeactivate {
+  canDeactivate: () => boolean;
+}*/
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class SaveChangesGuard implements CanDeactivate<ComponentDeactivate> {
+export class SaveChangesGuard implements CanDeactivate<EventoAddComponent/*ComponentDeactivate*/> {
   canDeactivate(
-    component: ComponentDeactivate,
+    component: EventoAddComponent/*ComponentDeactivate*/,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
-    nextState?: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return component.canDeactivate();
+    nextState?: RouterStateSnapshot): boolean {
+      if (component.saved) {
+        return true;
+      }
+      return component.canDeactivate();
   }
 
 }

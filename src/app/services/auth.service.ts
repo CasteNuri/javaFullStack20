@@ -8,54 +8,54 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly eventsURL = '/auth/';
-  logged: boolean;
-  loginChange$: EventEmitter<boolean>;
+  private readonly eventsURL = '/auth';
+  private logged = false;
+  loginChange$ = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) { }
+
+  private setLogged(logged: boolean) {
+    this.logged = logged;
+    this.loginChange$.emit(logged);
+  }
+
 
 
   login(email: string, password: string): Observable<void> {
     return this.http.post<LoginResponse>(`${this.eventsURL}/login`, { email, password }).pipe(
 
-      map(token => {
-        localStorage.setItem('token', JSON.stringify(token));
-        this.logged = true;
-        this.loginChange$.emit(true);
+      map(resp => {
+        localStorage.setItem('token', resp.accessToken);
+        this.setLogged(true);
       })
     );
   }
 
-  logout() {
+  logout(): void {
     // remove user from local storage and set logged and loginChange to false
     localStorage.removeItem('token');
-    this.logged = false;
-    this.loginChange$.emit(false);
+    this.setLogged(false);
   }
 
   isLogged(): Observable<boolean> {
 
+    const token = localStorage.getItem('token');
     if (this.logged) {
       return of(true);
-    } else if (!this.logged && localStorage.getItem('token') == null) {
+    } else if (!token) {
       return of(false);
     } else {
-      this.http.get<boolean>(`${this.eventsURL}/validate`).pipe(
-        map(resp => {
-          if (resp) {
-            this.logged = true;
-            return true;
-          }
-        },
-        catchError((resp: any) => {
-          if (!resp.ok){
-            this.logged = false;
-            localStorage.removeItem('token');
-            return of(false);
-          }
-        }))
+      return this.http.get<void>(`${this.eventsURL}/validate`).pipe(
+        map(() =>  {
+         this.setLogged(true);
+         return true;
+        }),
+
+        catchError((error: HttpErrorResponse) => {
+          localStorage.removeItem('token');
+          return of(false);
+        })
       );
     }
-
   }
 }

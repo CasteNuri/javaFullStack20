@@ -3,19 +3,21 @@ import { Evento } from '../interfaces/evento';
 import { EventosService } from '../services/eventos.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ComponentDeactivate } from '../guards/save-changes.guard';
+
 
 @Component({
   selector: 'evento-add',
   templateUrl: './evento-add.component.html',
   styleUrls: ['./evento-add.component.css']
 })
-export class EventoAddComponent implements OnInit, ComponentDeactivate {
+export class EventoAddComponent implements OnInit /*, ComponentDeactivate*/ {
 
-  @Input() newEvento: Evento;
-  @Input() nombreArchivo: string;
+ newEvento: Evento;
+ nombreArchivo: string;
 
   // @Output() eventoAdded = new EventEmitter<Evento>();
+
+  saved = false;
 
   private inicializarEvento(){
     this.newEvento = {
@@ -41,7 +43,10 @@ export class EventoAddComponent implements OnInit, ComponentDeactivate {
 
   addEvento() {
     this.eventosService.addEvent(this.newEvento).subscribe(
-      () =>  this.router.navigate(['/eventos'])
+      evento =>  {
+        this.saved = true;
+        this.router.navigate(['/eventos']);
+      }
     );
 
   }
